@@ -71,7 +71,14 @@ namespace Task_Management_App
                 VerticalAlignment = VerticalAlignment.Center
             };
 
-            Button addTaskButton = new Button();
+            Button addTaskButton = new Button
+            {
+                Content = "+",
+                Width = 25,
+                Height = 25,
+                Margin = new Thickness(0, 5, 5, 5),
+                HorizontalAlignment = HorizontalAlignment.Right
+            };
 
             Button deleteListButton = new Button
             {
@@ -117,7 +124,17 @@ namespace Task_Management_App
 
         private void AddTaskButton_Click(object sender, RoutedEventArgs e, TaskList taskList, StackPanel taskListPanel)
         {
-            
+            AddTaskWindow addTaskWindow = new AddTaskWindow();
+            addTaskWindow.Owner = this;
+
+            if (addTaskWindow.ShowDialog() == true)
+            {
+                Task newTask = addTaskWindow.NewTask;
+
+                taskList.Tasks.Add(newTask);
+
+                AddTaskVisual(newTask, taskListPanel);
+            }
         }
 
         private void AddTaskVisual(Task task, StackPanel taskListPanel)
@@ -174,7 +191,7 @@ namespace Task_Management_App
                 Width = 70,
                 Margin = new Thickness(0, 0, 5, 0)
             };
-            
+            updateButton.Click += (s, args) => UpdateTask(taskBorder);
 
             Button deleteButton = new Button
             {
@@ -192,7 +209,50 @@ namespace Task_Management_App
             taskListPanel.Children.Add(taskBorder);
         }
 
-        
+        private void UpdateTask(Border taskBorder)
+        {
+            Task task = (Task)taskBorder.Tag;
+            TaskList parentList = FindParentTaskList(taskBorder);
+
+            AddTaskWindow updateWindow = new AddTaskWindow();
+            updateWindow.Owner = this;
+
+            updateWindow.TitleTextBox.Text = task.Title;
+            updateWindow.DescriptionTextBox.Text = task.Description;
+
+            switch (task.Status)
+            {
+                case TaskStatus.ToDo:
+                    updateWindow.TodoRadioButton.IsChecked = true;
+                    break;
+                case TaskStatus.InProgress:
+                    updateWindow.InProgressRadioButton.IsChecked = true;
+                    break;
+                case TaskStatus.Done:
+                    updateWindow.DoneRadioButton.IsChecked = true;
+                    break;
+            }
+
+            updateWindow.DueDatePicker.SelectedDate = task.DueDate;
+            updateWindow.AddButton.Content = "Зберегти";
+
+            if (updateWindow.ShowDialog() == true)
+            {
+                task.Title = updateWindow.TitleTextBox.Text.Trim();
+                task.Description = updateWindow.DescriptionTextBox.Text.Trim();
+
+                if (updateWindow.InProgressRadioButton.IsChecked == true)
+                    task.Status = TaskStatus.InProgress;
+                else if (updateWindow.DoneRadioButton.IsChecked == true)
+                    task.Status = TaskStatus.Done;
+                else
+                    task.Status = TaskStatus.ToDo;
+
+                task.DueDate = updateWindow.DueDatePicker.SelectedDate;
+
+                UpdateTaskVisual(taskBorder, task);
+            }
+        }
 
         private void UpdateTaskVisual(Border taskBorder, Task task)
         {
