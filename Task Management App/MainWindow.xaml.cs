@@ -71,23 +71,11 @@ namespace Task_Management_App
                 VerticalAlignment = VerticalAlignment.Center
             };
 
-            Button addTaskButton = new Button
-            {
-                Content = "+",
-                Width = 25,
-                Height = 25,
-                Margin = new Thickness(0, 5, 5, 5),
-                HorizontalAlignment = HorizontalAlignment.Right
-            };
+            Button addTaskButton = new Button();
+            addTaskButton.Style = (Style)FindResource("AddTaskButton");
 
-            Button deleteListButton = new Button
-            {
-                Content = "-",
-                Width = 25,
-                Height = 25,
-                Margin = new Thickness(0, 5, 5, 5),
-                HorizontalAlignment = HorizontalAlignment.Right
-            };
+            Button deleteListButton = new Button();
+            deleteListButton.Style = (Style)FindResource("DeleteTaskButton");
 
             deleteListButton.Click += (s, args) => DeleteTaskList(taskListBorder);
             addTaskButton.Click += (s, args) => AddTaskButton_Click(s, args, newTaskList, taskListPanel);
