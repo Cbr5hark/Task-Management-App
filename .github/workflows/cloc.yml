@@ -1,0 +1,21 @@
+name: Count Lines of Code
+
+on:
+  push:
+    branches: [ master, develop ]
+      
+
+jobs:
+  count-lines:
+    name: Run cloc
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install cloc
+        run: sudo apt-get install -y cloc
+
+      - name: Run cloc
+        run: cloc .
