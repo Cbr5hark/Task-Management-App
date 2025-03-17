@@ -1,0 +1,29 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor User
+rectangle "Task Management System" {
+  
+usecase "Create New Task" as UC1
+usecase "Set Task Title" as UC2
+usecase "Set Task Description" as UC3
+usecase "Set Task Status" as UC4
+usecase "Set Task Due Date" as UC5
+usecase "Update Existing Task" as UC6
+usecase "Delete Task" as UC7
+usecase "View Tasks in List" as UC8
+}
+
+User --> UC1
+User --> UC6
+User --> UC7
+User --> UC8
+UC1 ..> UC2 : <<include>>
+UC1 ..> UC3 : <<include>>
+UC1 ..> UC4 : <<include>>
+UC1 ..> UC5 : <<include>>
+UC6 ..> UC2 : <<include>>
+UC6 ..> UC3 : <<include>>
+UC6 ..> UC4 : <<include>>
+UC6 ..> UC5 : <<include>>
+@enduml

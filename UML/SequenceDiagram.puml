@@ -1,0 +1,21 @@
+@startuml
+
+    actor User
+    participant MainWindow
+    participant AddTaskWindow
+    participant TaskList
+    participant Task
+    
+    User->>MainWindow: Click Add Task button
+    MainWindow->>AddTaskWindow: Create new AddTaskWindow
+    MainWindow->>AddTaskWindow: ShowDialog()
+    User->>AddTaskWindow: Enter task details
+    User->>AddTaskWindow: Click Add button
+    AddTaskWindow->>AddTaskWindow: Validate inputs
+    AddTaskWindow->>Task: Create Task(title, description, status, dueDate)
+    AddTaskWindow->>MainWindow: Return NewTask
+    MainWindow->>TaskList: Tasks.Add(newTask)
+    MainWindow->>MainWindow: AddTaskVisual(newTask, taskListPanel)
+    MainWindow->>User: Display new task
+
+@enduml

@@ -1,0 +1,64 @@
+@startuml
+
+    class Board {
+        +string Name
+        -List~TaskList~ Lists
+        +Board(string name)
+        +AddList(string title)
+        +RemoveList(string title)
+        +GetList(string title)
+    }
+    
+    class TaskList {
+        +string Title
+        -List~Task~ Tasks
+        +TaskList(string name)
+        +AddTask(string title, string description, TaskStatus status, DateTime dueDate)
+        +RemoveTask(int id)
+    }
+    
+    class Task {
+        -static int _nextId
+        +int Id
+        +string Title
+        +string Description
+        +TaskStatus Status
+        +DateTime? DueDate
+        +Task(string title, string description, TaskStatus status, DateTime dueDate)
+    }
+    
+    class TaskStatus {
+        <<enumeration>>
+        ToDo
+        InProgress
+        Done
+    }
+    
+    class MainWindow {
+        -Board _mainBoard
+        +MainWindow()
+        -AddTaskListButton_Click(object sender, RoutedEventArgs e)
+        -DeleteTaskList(Border taskListBorder)
+        -AddTaskButton_Click(object sender, RoutedEventArgs e, TaskList taskList, StackPanel taskListPanel)
+        -AddTaskVisual(Task task, StackPanel taskListPanel)
+        -UpdateTask(Border taskBorder)
+        -UpdateTaskVisual(Border taskBorder, Task task)
+        -DeleteTask(Border taskBorder, StackPanel taskListPanel)
+        -FindParentTaskList(Border taskBorder)
+        -GetTaskStatusColor(TaskStatus status)
+    }
+    
+    class AddTaskWindow {
+        +Task NewTask
+        +AddTaskWindow()
+        -AddButton_Click(object sender, RoutedEventArgs e)
+        -CancelButton_Click(object sender, RoutedEventArgs e)
+    }
+    
+    Board "1" *-- "many" TaskList
+    TaskList "1" *-- "many" Task
+    Task --> TaskStatus
+    MainWindow "1" *-- "1" Board
+    MainWindow --> AddTaskWindow
+
+@enduml
